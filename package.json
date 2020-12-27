@@ -1,0 +1,14 @@
+{
+  "name": "cryptochain",
+  "version": "1.0.0",
+  "description": "crypto currency project by using blockchain",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Swanand Kavitkar",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
+}
