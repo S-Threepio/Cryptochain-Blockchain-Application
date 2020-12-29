@@ -23,10 +23,8 @@ class Block {
             timestamp = Date.now();
             difficulty = this.adjustDifficulty({ originalBlock: lastBlock, timestamp });
             hash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
-            console.log(hash + "       " + difficulty);
         } while (hexToBinary(hash).substring(0, difficulty) !== '0'.repeat(difficulty));
 
-        console.log("Difference is -> " + (timestamp - lastBlock.timestamp).toString());
         return new this({
             timestamp,
             lastHash,

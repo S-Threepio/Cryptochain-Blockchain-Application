@@ -49,23 +49,23 @@ class Blockchain {
     }
 }
 
-const chain = new Blockchain();
-const chain2 = new Blockchain();
-console.log("chain 1 is " + Blockchain.isValidChain(chain.chain));
-console.log("chain 2 is " + Blockchain.isValidChain(chain2.chain));
+// const chain = new Blockchain();
+// const chain2 = new Blockchain();
+// console.log("chain 1 is " + Blockchain.isValidChain(chain.chain));
+// console.log("chain 2 is " + Blockchain.isValidChain(chain2.chain));
 
-chain.addBlock({ data: [] });
-console.log(chain);
+// chain.addBlock({ data: [] });
+// console.log(chain);
 
-chain2.addBlock({ data: [] });
-chain2.addBlock({ data: [] });
-console.log(chain2);
+// chain2.addBlock({ data: [] });
+// chain2.addBlock({ data: [] });
+// console.log(chain2);
 
-// chain2.chain[1].data = ['new data'];
-console.log("chain 1 is " + Blockchain.isValidChain(chain.chain));
-console.log("chain 2 is " + Blockchain.isValidChain(chain2.chain));
+// // chain2.chain[1].data = ['new data'];
+// console.log("chain 1 is " + Blockchain.isValidChain(chain.chain));
+// console.log("chain 2 is " + Blockchain.isValidChain(chain2.chain));
 
-chain.replaceChain(chain2.chain);
+// chain.replaceChain(chain2.chain);
 
 
 
