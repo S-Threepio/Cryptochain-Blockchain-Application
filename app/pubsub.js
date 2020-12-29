@@ -2,16 +2,17 @@ const redis = require('redis');
 
 const CHANNELS = {
     TEST: 'TEST',
-    BLOCKCHAIN: 'BLOCKCHAIN'
+    BLOCKCHAIN: 'BLOCKCHAIN',
+    TRANSACTION: 'TRANSACTION'
 };
 
-class Pubsub { 
+class Pubsub {
 
-    constructor({ blockchain }) {
+    constructor({ blockchain, transactionPool }) {
         this.blockchain = blockchain;
         this.publisher = redis.createClient()
         this.subscriber = redis.createClient()
-
+        this.transactionPool = transactionPool;
         this.subscribeToChannels();
         this.subscriber.on('message', (channel, message) => this.handleMessage(channel, message));
     }
@@ -24,25 +25,39 @@ class Pubsub {
 
     handleMessage(channel, message) {
         console.log(`Message received. Channel : ${channel}. Message: ${message}.`);
-        const parsedMesage = JSON.parse(message);
-        if (channel === CHANNELS.BLOCKCHAIN)
-            this.blockchain.replaceChain(parsedMesage)
+        const parsedMessage = JSON.parse(message);
+
+        switch (channel) {
+            case CHANNELS.BLOCKCHAIN:
+                this.blockchain.replaceChain(parsedMessage);
+                break;
+            case CHANNELS.TRANSACTION:
+                this.transactionPool.setTransaction(parsedMessage);
+                break;
+            default : return;    
+        }
     }
 
     //TODO bad impl since it can get a message when the channel is unsubscribed
     publish({ channel, message }) {
-        this.subscriber.unsubscribe(channel,()=>{
-            this.publisher.publish(channel, message,()=>{
+        this.subscriber.unsubscribe(channel, () => {
+            this.publisher.publish(channel, message, () => {
                 this.subscriber.subscribe(channel);
             });
         })
-
     }
 
     broadcastChain() {
         this.publish({
             channel: CHANNELS.BLOCKCHAIN,
             message: JSON.stringify(this.blockchain.chain)
+        })
+    }
+
+    broadcastTransaction(transaction) {
+        this.publish({
+            channel: CHANNELS.TRANSACTION,
+            message: JSON.stringify(transaction)
         })
     }
 
