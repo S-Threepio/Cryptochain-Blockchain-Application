@@ -1,6 +1,6 @@
 const hexToBinary = require('hex-to-binary');
 const Block = require('./block');
-const {cryptoHash} = require('../util');
+const { cryptoHash } = require('../util');
 
 class Blockchain {
 
@@ -35,7 +35,7 @@ class Blockchain {
         return true;
     }
 
-    replaceChain(chain) {
+    replaceChain(chain, onSuccess) {
         if (this.chain.length >= chain.length) {
             console.error('Incoming chain must be longer');
             return;
@@ -44,6 +44,8 @@ class Blockchain {
             console.error('Incoming chain must be Valid');
             return;
         }
+
+        if (onSuccess) onSuccess();
         console.log("replacing chain with " + chain);
         this.chain = chain;
     }

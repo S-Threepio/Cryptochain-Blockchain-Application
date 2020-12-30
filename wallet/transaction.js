@@ -1,11 +1,12 @@
 const uuid = require('uuid/v1');
 const { verifySignature } = require('../util');
-class Transaction {
+const { REWARD_INPUT, MINING_REWARD } = require('../config');
 
-    constructor({ senderWallet, recipient, amount }) {
+class Transaction {
+    constructor({ senderWallet, recipient, amount, outputMap, inputMap }) {
         this.id = uuid();
-        this.outputMap = this.createOutputMap({ senderWallet, recipient, amount });
-        this.inputMap = this.createInputMap({ senderWallet, outputMap:this.outputMap });
+        this.outputMap = outputMap || this.createOutputMap({ senderWallet, recipient, amount });
+        this.inputMap = inputMap || this.createInputMap({ senderWallet, outputMap: this.outputMap });
     }
 
     createOutputMap({ senderWallet, recipient, amount }) {
@@ -42,7 +43,7 @@ class Transaction {
     }
 
     static validTransaction(transaction) {
-        const { input: { amount, address, signature }, outputMap } = transaction;
+        const { inputMap: { amount, address, signature }, outputMap } = transaction;
 
         const outputTotal = Object.values(outputMap).reduce((total, outputAmount) => total + outputAmount);
 
@@ -51,13 +52,21 @@ class Transaction {
             return false;
         }
 
-        if (!verifySignature({ publicKey, data: outputMap, signature })) {
+        if (!verifySignature({ publicKey: address, data: outputMap, signature })) {
             console.error(`Invalid signature from ${address}`);
             return false;
         }
 
         return true;
     }
+
+    static rewardTransaction({ minerWallet }) {
+        return new this({
+            inputMap: REWARD_INPUT,
+            outputMap: { [minerWallet.publicKey]: MINING_REWARD }
+        });
+    }
+
 }
 
 module.exports = Transaction;
