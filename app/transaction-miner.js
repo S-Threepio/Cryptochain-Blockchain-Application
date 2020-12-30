@@ -1,3 +1,4 @@
+const { validTransaction } = require('../wallet/transaction');
 const Transaction = require('../wallet/transaction');
 class TransactionMiner {
 
@@ -12,23 +13,21 @@ class TransactionMiner {
         //get transaction pools valid transactions
         const validTransactions = this.transactionPool.validTransactions();
 
-        console.log("these are valid transactions :", validTransactions);
-        //generate miner's reward
-        validTransactions.push(
-            Transaction.rewardTransaction({ minerWallet: this.wallet })
-        );
+        //check if any transaction exists
+        if (validTransactions.length > 0) {
+            //generate miner's reward
+            validTransactions.push(
+                Transaction.rewardTransaction({ minerWallet: this.wallet })
+            );
+            //add a block consisting of these transactions to the blockchain
+            this.blockchain.addBlock({ data: validTransactions });
 
-        this.blockchain.addBlock({ data: validTransactions });
+            //broadcast the updated blockchain
+            this.pubsub.broadcastChain();
 
-        this.pubsub.broadcastChain();
-
-        this.transactionPool.clear();
-        //add a block consisting of these transactions to the blockchain
-
-        //broadcast the updated blockchain
-
-        //clear the pool
-
+            //clear the pool
+            this.transactionPool.clear();
+        }
     }
 
 
