@@ -4,6 +4,6 @@ import { render } from 'react-dom';
 
 render(
     <div>
-        Cryptochain  in react
+          in react
     </div>, document.getElementById('root')
 );

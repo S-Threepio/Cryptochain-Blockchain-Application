@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "npm run start-redis && nodemon -L index.js",
+    "start": "npm run build-client && node index.js",
+    "dev": "npm run dev-client & npm run start-redis && nodemon -L index.js",
     "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon -L index.js",
     "start-redis": "redis-server --daemonize yes",
-    "build-client" : "parcel build client/src/index.html --out-dir client/dist"
+    "build-client": "npm run clean && parcel build client/src/index.html --out-dir client/dist",
+    "dev-client": "npm run clean && parcel client/src/index.html --out-dir client/dist",
+    "clean" : "rm -rf .cache client/dist"
   },
   "author": "Swanand Kavitkar",
   "license": "ISC",
@@ -23,7 +25,7 @@
     "elliptic": "^6.4.1",
     "express": "^4.16.3",
     "hex-to-binary": "^1.0.1",
-    "parcel-bundler": "^1.10.3",
+    "parcel-bundler": "^1.12.4",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "redis": "^2.8.0",
