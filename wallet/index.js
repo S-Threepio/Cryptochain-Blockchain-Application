@@ -28,7 +28,6 @@ class Wallet {
     }
 
     static calculateBalance({ chain, address }) {
-        console.log(chain);
         let hasConductedTransaction = false;
         let outputsTotal = 0;
 
