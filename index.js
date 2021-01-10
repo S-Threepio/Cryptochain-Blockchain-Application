@@ -95,60 +95,7 @@ const syncWithRootNode = () => {
     });
 };
 
-// start of dummy data
-const walletFoo = new Wallet();
-const walletBar = new Wallet();
-
-const genrateWalletTransaction = ({ wallet, recipient, amount }) => {
-    const transaction = wallet.createTransaction({
-        recipient, amount, chain: blockchain.chain
-    });
-
-    transactionPool.setTransaction(transaction);
-};
-
-const walletFooAction = () => genrateWalletTransaction({
-    wallet: walletFoo, recipient: walletBar.publicKey, amount: 10
-});
-
-const walletAction = () => genrateWalletTransaction({
-    wallet, recipient: walletFoo.publicKey, amount: 5
-});
-
-const walletBarAction = () => genrateWalletTransaction({
-    wallet: walletBar, recipient: wallet.publicKey, amount: 15
-});
-
-
-for (let i = 0; i < 10; i++) {
-    if (i % 3 === 0) {
-        walletAction();
-        walletFooAction();
-    }
-    else if (i % 3 === 1) {
-        walletAction();
-        walletBarAction();
-    }
-    else {
-        walletFooAction();
-        walletBarAction();
-    }
-
-    transactionMiner.mineTransactions();
-}
-
-//end of dummy data
-
-
-let PEER_PORT;
-
-//TODO can be improved using docker
-if (process.env.GENERATE_PEER_PORT === 'true') {
-    PEER_PORT = DEFAULT_PORT + Math.ceil(Math.random() * 1000);
-}
-
-
-const PORT = PEER_PORT || DEFAULT_PORT;
+const PORT = DEFAULT_PORT;
 app.listen(PORT, () => {
     console.log(`Listening on port localhost: ${PORT}`)
     if (PORT !== DEFAULT_PORT)

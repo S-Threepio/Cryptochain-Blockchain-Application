@@ -11,8 +11,8 @@ class Pubsub {
 
     constructor({ blockchain, transactionPool }) {
         this.blockchain = blockchain;
-        this.publisher = redis.createClient()
-        this.subscriber = redis.createClient()
+        this.publisher = redis.createClient({ host: 'redis', port: 6379 });
+        this.subscriber = redis.createClient({ host: 'redis', port: 6379 });
         this.transactionPool = transactionPool;
         this.subscribeToChannels();
         this.subscriber.on('message', (channel, message) => this.handleMessage(channel, message));
