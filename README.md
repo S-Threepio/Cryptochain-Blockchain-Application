@@ -26,7 +26,7 @@ then,
 The REST APIs in the backend can be checked on Postman
 - GET /blocks : to get the current blockchain blocks
 - POST /transact : {
-    "recipient": "war",
+    "recipient": "foo",
     "amount": 20
 } : to make a transaction between 2 peers
 - GET /transaction-pool-map : to get the transactions pool map
