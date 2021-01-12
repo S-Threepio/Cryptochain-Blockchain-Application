@@ -1,7 +1,7 @@
 # Cryptochain
-A Cryptocurrency-Blockchain project
+A Cryptocurrency-Blockchain project using Express JS and Redis Pub Sub model
 
-To start this project you need to follow below steps :
+
 
 # SETUP : Install Redis
 - this project uses Redis server for publish subscribe model.
